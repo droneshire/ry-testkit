@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Shared integration test base classes for Redis and Postgres containers"
 readme = "README.md"
 requires-python = ">=3.12"
-authors = [{ name = "Ross Eager" }]
+authors = [{ name = "Ross Yeager" }]
 dependencies = [
   "psycopg2-binary",
   "redis",
