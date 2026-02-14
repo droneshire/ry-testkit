@@ -1,0 +1,42 @@
+name: Python Application
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv pip compile --strip-extras --output-file=packages/requirements-dev.txt packages/base_requirements.in packages/dev_requirements.in
+          uv pip install --system -r packages/requirements-dev.txt
+
+      - name: Check formatting
+        run: make check_format
+
+      - name: Run mypy
+        run: make mypy
+
+      - name: Run pylint
+        run: make pylint
+
+      - name: Run tests
+        run: make test
