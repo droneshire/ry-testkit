@@ -81,5 +81,5 @@ class PostgresOnlyTestBase(unittest.TestCase):
             "port": int(cls.container.get_exposed_port(5432)),
             "user": cls.USER,
             "password": cls.PASSWORD,
-            "db": cls.DB,
+            "dbname": cls.DB,
         }
