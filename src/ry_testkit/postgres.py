@@ -55,7 +55,9 @@ class PostgresOnlyTestBase(unittest.TestCase):
         c.start()
 
         try:
-            wait_for_logs(c, "database system is ready to accept connections", timeout=cls.READY_TIMEOUT_S)
+            wait_for_logs(
+                c, "database system is ready to accept connections", timeout=cls.READY_TIMEOUT_S
+            )
         except Exception:
             pass
 

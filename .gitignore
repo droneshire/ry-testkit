@@ -4,3 +4,4 @@ dist/*
 *.egg-info
 .pylint.d/
 venv/
+.black_cache/
