@@ -63,3 +63,27 @@ clean:
 	rm -rf packages/requirements*.txt
 
 .PHONY: init install install_dev format check_format mypy pylint isort lint lint_full test clean
+
+release:
+	@if [ "$(shell git rev-parse --abbrev-ref HEAD)" != "main" ]; then \
+		echo "ERROR: release must run on main"; \
+		exit 1; \
+	fi
+	@if [ -n "$(shell git status --porcelain)" ]; then \
+		echo "ERROR: working tree must be clean before release"; \
+		git status --short; \
+		exit 1; \
+	fi
+	@CUR_VERSION=$$(sed -n 's/^version = "\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)"/\1/p' pyproject.toml | head -n1); \
+	if [ -z "$$CUR_VERSION" ]; then \
+		echo "ERROR: could not parse version from pyproject.toml"; \
+		exit 1; \
+	fi; \
+	NEW_VERSION=$$(echo $$CUR_VERSION | awk -F. '{printf "%d.%d.%d", $$1, $$2, $$3+1}'); \
+	echo "Bumping $$CUR_VERSION -> $$NEW_VERSION"; \
+	sed -i "s/^version = \"$$CUR_VERSION\"/version = \"$$NEW_VERSION\"/" pyproject.toml; \
+	git add pyproject.toml; \
+	git commit -m "release: $$NEW_VERSION"; \
+	git push origin main
+
+.PHONY: release
