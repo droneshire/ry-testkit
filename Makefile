@@ -11,9 +11,7 @@ PY_PATH=$(PWD)/src
 RUN_PY = PYTHONPATH=$(PY_PATH) $(PYTHON) -m
 
 PY_FIND_COMMAND = find . -name '*.py' | grep -vE "($(PY_VENV_REL_PATH))"
-PY_FILES = $(shell $(PY_FIND_COMMAND))
-BLACK_CMD = for f in $(PY_FILES); do $(RUN_PY) black --line-length 100 "$$f"; done
-BLACK_CHECK_CMD = for f in $(PY_FILES); do $(RUN_PY) black --line-length 100 --check --diff "$$f"; done
+BLACK_CMD = $(RUN_PY) black --line-length 100 $(shell $(PY_FIND_COMMAND))
 MYPY_CONFIG=$(PWD)/mypy_config.ini
 
 init:
@@ -40,7 +38,7 @@ format: isort
 	$(BLACK_CMD)
 
 check_format:
-	$(BLACK_CHECK_CMD)
+	$(BLACK_CMD) --check --diff
 
 mypy:
 	$(RUN_PY) mypy $(shell $(PY_FIND_COMMAND)) --config-file $(MYPY_CONFIG) --no-namespace-packages
