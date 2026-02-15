@@ -44,7 +44,7 @@ mypy:
 	$(RUN_PY) mypy $(shell $(PY_FIND_COMMAND)) --config-file $(MYPY_CONFIG) --no-namespace-packages
 
 pylint:
-	$(RUN_PY) pylint $(shell $(PY_FIND_COMMAND))
+	PYLINTHOME=.pylint.d $(RUN_PY) pylint $(shell $(PY_FIND_COMMAND))
 
 isort:
 	isort $(shell $(PY_FIND_COMMAND))

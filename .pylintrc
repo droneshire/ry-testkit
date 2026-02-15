@@ -1,0 +1,12 @@
+[MESSAGES CONTROL]
+disable=
+    missing-module-docstring,
+    missing-class-docstring,
+    missing-function-docstring,
+    broad-exception-caught,
+    duplicate-code,
+    line-too-long,
+    no-name-in-module
+
+[FORMAT]
+max-line-length=100
